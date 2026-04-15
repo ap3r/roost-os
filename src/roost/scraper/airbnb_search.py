@@ -400,24 +400,30 @@ async def scrape_search(
                 # Give GraphQL responses a moment to arrive
                 await asyncio.sleep(3)
             else:
-                # Paginate: scroll to bottom and click Next
-                await page.evaluate("window.scrollTo(0, document.body.scrollHeight)")
-                await asyncio.sleep(1)
-
-                next_button = await page.query_selector('a[aria-label="Next"], a[data-testid="pagination-next"]')
-                if not next_button:
-                    logger.info(f"No 'Next' button found on page {page_num - 1}, stopping pagination")
-                    break
-
-                await next_button.click()
+                # Paginate: find Next button, scroll to it, and click
                 try:
-                    await page.wait_for_selector(
-                        '[data-testid="card-container"], [itemprop="itemListElement"]',
-                        timeout=15_000,
+                    next_button = await page.query_selector(
+                        'a[aria-label="Next"], a[data-testid="pagination-next"]'
                     )
-                except Exception:
-                    logger.warning(f"Timeout waiting for page {page_num} results")
-                await asyncio.sleep(2)
+                    if not next_button:
+                        logger.info(f"No 'Next' button found on page {page_num - 1}, stopping pagination")
+                        break
+
+                    await next_button.scroll_into_view_if_needed(timeout=5_000)
+                    await asyncio.sleep(0.5)
+                    # Use JS click to bypass viewport checks
+                    await next_button.evaluate("el => el.click()")
+                    try:
+                        await page.wait_for_selector(
+                            '[data-testid="card-container"], [itemprop="itemListElement"]',
+                            timeout=15_000,
+                        )
+                    except Exception:
+                        logger.warning(f"Timeout waiting for page {page_num} results")
+                    await asyncio.sleep(2)
+                except Exception as exc:
+                    logger.warning(f"Pagination to page {page_num} failed: {exc}, returning results so far")
+                    break
 
             # Random delay between pages to look human
             if page_num < max_pages:
