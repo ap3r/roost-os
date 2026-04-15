@@ -1,0 +1,26 @@
+# Python
+.venv/
+__pycache__/
+*.egg-info/
+*.pyc
+dist/
+build/
+
+# Config (user-specific, not committed)
+config/properties.yaml
+
+# Data (user-specific, not committed)
+data/comps/
+data/pricelabs/
+data/reports/
+data/hospitable/
+
+# IDE
+.vscode/
+.idea/
+
+# Claude Code
+.claude/
+
+# OS
+.DS_Store

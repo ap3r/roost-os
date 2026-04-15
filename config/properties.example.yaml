@@ -1,0 +1,91 @@
+# Roost OS — Portfolio Configuration
+#
+# Copy this file to properties.yaml and fill in your own properties.
+# UUIDs come from your Hospitable account (via the MCP get-properties tool).
+
+market:
+  name: "Your City, ST"
+  state: "Your State"
+  latitude: 44.7631
+  longitude: -85.6206
+
+properties:
+  # Add your Hospitable properties here.
+  # Each property needs a UUID from Hospitable, type, bedroom count,
+  # max guests, and a comp_group key that maps to the comp_groups below.
+
+  - name: "Downtown Condo"
+    uuid: "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"  # from Hospitable
+    type: "condo"        # condo, townhouse, cottage, house
+    bedrooms: 1
+    max_guests: 4
+    comp_group: "downtown_1br"
+
+  - name: "Lakefront Cabin"
+    uuid: "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+    type: "cottage"
+    bedrooms: 2
+    max_guests: 4
+    comp_group: "rural_2br"
+
+  - name: "Family Townhouse"
+    uuid: "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+    type: "townhouse"
+    bedrooms: 3
+    max_guests: 6
+    comp_group: "downtown_3br"
+
+# Comp groups define Airbnb search criteria for competitive analysis.
+# Group properties with similar comps together.
+comp_groups:
+  downtown_1br:
+    label: "Downtown 1BR"
+    location: "Downtown Your City, ST"
+    min_bedrooms: 1
+    max_bedrooms: 1
+    guests: 4
+    property_type: "apartment"
+
+  rural_2br:
+    label: "Rural 2BR Cabins"
+    location: "Your City, ST"
+    min_bedrooms: 2
+    max_bedrooms: 2
+    guests: 4
+    property_type: "cabin"
+
+  downtown_3br:
+    label: "Downtown 3BR"
+    location: "Downtown Your City, ST"
+    min_bedrooms: 3
+    max_bedrooms: 3
+    guests: 6
+    property_type: "townhouse"
+
+# Seasonal demand patterns — adjust months and multipliers for your market.
+# Multiplier is relative to your base ADR (1.0 = average).
+seasons:
+  peak:
+    label: "Peak Season"
+    months: [7]
+    multiplier: 1.5
+  high:
+    label: "High Season"
+    months: [6, 8]
+    multiplier: 1.25
+  shoulder_fall:
+    label: "Fall Shoulder"
+    months: [9, 10]
+    multiplier: 1.1
+  moderate:
+    label: "Winter Moderate"
+    months: [12, 1, 2]
+    multiplier: 0.9
+  shoulder_spring:
+    label: "Spring Shoulder"
+    months: [4, 5]
+    multiplier: 0.8
+  low:
+    label: "Off Season"
+    months: [3, 11]
+    multiplier: 0.7
