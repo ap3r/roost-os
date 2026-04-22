@@ -6,8 +6,8 @@
 market:
   name: "Your City, ST"
   state: "Your State"
-  latitude: 44.7631
-  longitude: -85.6206
+  latitude: 0.0       # your market's latitude
+  longitude: 0.0      # your market's longitude
 
 properties:
   # Add your Hospitable properties here.

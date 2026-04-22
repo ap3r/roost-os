@@ -1,26 +1,12 @@
 # Roost OS
 
-A revenue intelligence agent for short-term rental hosts. Combines **Hospitable** (your PMS), **Airbnb comp scraping**, and **PriceLabs market data** into actionable pricing and occupancy insights — all powered by Claude Code.
+Revenue intelligence for short-term rental hosts, built on Claude Code.
 
-There's no separate app to run. Claude Code *is* the agent. The Python scripts are data collection tools that Claude orchestrates through natural conversation.
+This uses Claude Code to interact with the [Hospitable MCP server](https://www.hospitable.com/mcp/) for live PMS data (calendar, reservations, financials, messaging), parses and ingests PriceLabs market reports, and uses a Playwright-based Airbnb searcher to get live competitor booking data. Claude Code orchestrates all three and does the analysis — occupancy, ADR, gap night detection, comp-based pricing — through natural conversation.
 
-## What It Does
+There's no separate app. You open Claude Code in this directory and ask questions like "How are we doing?" or "Any gap nights in the next 60 days?"
 
-**Ask Claude Code questions like:**
-- "How are we doing?" — portfolio health check with occupancy, ADR, RevPAR
-- "How's my pricing for July 4th week?" — pulls your calendar, scrapes Airbnb comps, compares to market data
-- "Find gap nights" — detects orphan nights between bookings, recommends min-stay and price adjustments
-- "Full report" — generates a comprehensive markdown report combining all three data sources
-
-**Three data sources, one conversation:**
-
-| Source | Method | What You Get |
-|---|---|---|
-| Hospitable | MCP (live API) | Calendar, reservations, pricing, reviews, financials |
-| Airbnb | Playwright scraper | Competitor pricing, ratings, supply for your market |
-| PriceLabs | PDF/CSV import | Market-wide ADR, occupancy, RevPAR, seasonal trends |
-
-## Quick Start
+## Setup
 
 ### Prerequisites
 - Python 3.11+
@@ -55,12 +41,12 @@ Open Claude Code in the `roost-os` directory and start asking questions:
 
 ```
 > How does my pricing compare to the market for next weekend?
-> Scrape comps for July 4th week
+> Find comps for July 4th week
 > Any gap nights in the next 60 days?
 > Generate a full portfolio report
 ```
 
-## Architecture
+## How It Works
 
 ```
 ┌─────────────────────────────────────────────────────┐
@@ -79,7 +65,7 @@ Open Claude Code in the `roost-os` directory and start asking questions:
 └────────────────┴───────────────────┴──────────────────────┘
 ```
 
-The Python code handles data collection and number-crunching. Claude Code handles orchestration, interpretation, and conversation — deciding which tools to run, combining results, and generating insights in plain English.
+The Python code handles data collection and number-crunching. Claude Code decides which tools to run, combines results, and gives you the analysis.
 
 ## Project Structure
 
@@ -92,24 +78,24 @@ roost-os/
 ├── src/roost/
 │   ├── models.py                  # Shared dataclasses
 │   ├── config.py                  # YAML config loader
-│   ├── scraper/airbnb_search.py   # Airbnb scraper (GraphQL + DOM fallback)
+│   ├── scraper/airbnb_search.py   # Airbnb search (GraphQL + DOM fallback)
 │   ├── pricelabs/                 # PriceLabs CSV/PDF import
 │   ├── analysis/                  # Portfolio, gap nights, pricing, seasonal
 │   └── reports/                   # Markdown report generation
 ├── scripts/                       # CLI entry points
-└── data/                          # Scrape results, reports (gitignored)
+└── data/                          # Results and reports (gitignored)
 ```
 
-## How the Scraper Works
+## Airbnb Search
 
-The Airbnb scraper uses Playwright to search Airbnb with your comp group criteria (location, bedrooms, guests, dates). It attempts to intercept `StaysSearch` GraphQL API responses for structured data, with a DOM fallback that parses listing cards directly. No API key needed — it works like a browser.
+Uses Playwright to search Airbnb with your comp group criteria (location, bedrooms, guests, dates). Intercepts `StaysSearch` GraphQL API responses for structured data, with a DOM fallback that parses listing cards directly. No API key needed.
 
 ## Built With
 
-- [Claude Code](https://docs.anthropic.com/en/docs/claude-code) — the agent runtime
+- [Claude Code](https://docs.anthropic.com/en/docs/claude-code) — agent runtime
 - [Hospitable MCP](https://www.hospitable.com/mcp/) — live PMS data
-- [Playwright](https://playwright.dev/) — headless browser for Airbnb scraping
-- [Pandas](https://pandas.pydata.org/) + [Pydantic](https://docs.pydantic.dev/) — data import and validation
+- [Playwright](https://playwright.dev/) — Airbnb search
+- [Pandas](https://pandas.pydata.org/) + [Pydantic](https://docs.pydantic.dev/) — data pipeline
 
 ## License
 

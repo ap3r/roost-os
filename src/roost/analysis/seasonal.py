@@ -1,8 +1,8 @@
-"""Traverse City seasonal demand patterns for Roost OS.
+"""Seasonal demand patterns for Roost OS.
 
 Maps dates to seasonal demand multipliers and provides pricing context
-based on the Traverse City tourism calendar. The National Cherry Festival
-is the single biggest demand driver, followed by summer/fall color seasons.
+based on the configured market's tourism calendar. Supports optional
+local event overrides (e.g. festivals) as the biggest demand drivers.
 
 All financial amounts are in cents (integers).
 """

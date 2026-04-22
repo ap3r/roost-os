@@ -38,7 +38,7 @@ def _build_search_url(
     """Build an Airbnb search URL with the given filters.
 
     Args:
-        location: Free-text location string (e.g. "Downtown Traverse City, MI").
+        location: Free-text location string (e.g. "Downtown Denver, CO").
         checkin: Check-in date as YYYY-MM-DD.
         checkout: Checkout date as YYYY-MM-DD.
         guests: Number of adult guests.
@@ -337,7 +337,7 @@ async def scrape_search(
     """Scrape Airbnb search results for competing listings.
 
     Args:
-        location: Free-text location (e.g. "Downtown Traverse City, MI").
+        location: Free-text location (e.g. "Downtown Denver, CO").
         checkin: Check-in date as YYYY-MM-DD.
         checkout: Checkout date as YYYY-MM-DD.
         guests: Number of adult guests.
